@@ -4,16 +4,16 @@ import React, {
   useMemo,
   useRef,
   useState,
-} from "react";
-import { HiCheck } from "react-icons/hi";
-import { IoMdClose } from "react-icons/io";
+} from 'react';
+import { HiCheck } from 'react-icons/hi';
+import { IoMdClose } from 'react-icons/io';
 import MaterialReactTable, {
   MRT_FullScreenToggleButton,
   MRT_GlobalFilterTextField,
   MRT_ShowHideColumnsButton,
   MRT_ToggleDensePaddingButton,
   MRT_ToggleFiltersButton,
-} from "material-react-table";
+} from 'material-react-table';
 
 import {
   Box,
@@ -26,22 +26,22 @@ import {
   Pagination,
   Toolbar,
   Tooltip,
-} from "@mui/material";
+} from '@mui/material';
 
-import RefreshIcon from "@mui/icons-material/Refresh";
-import { Delete, Edit } from "@mui/icons-material";
-import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
-import { Button, Toast } from "flowbite-react";
-import UserCreate from "../Components/modals/UserCreate";
-import axios from "axios";
-import UserUpdate from "../Components/modals/UserUpdate";
+import RefreshIcon from '@mui/icons-material/Refresh';
+import { Delete, Edit } from '@mui/icons-material';
+import { useMutation, useQuery, useQueryClient } from '@tanstack/react-query';
+import { Button, Toast } from 'flowbite-react';
+import UserCreate from '../Components/modals/UserCreate';
+import axios from 'axios';
+import UserUpdate from '../Components/modals/UserUpdate';
 
 const User = () => {
   const queryClient = useQueryClient();
   const [columnFilters, setColumnFilters] = useState([]);
   const [createModalOpen, setCreateModalOpen] = useState(false);
   const [tableData, setTableData] = useState([]);
-  const [globalFilter, setGlobalFilter] = useState("");
+  const [globalFilter, setGlobalFilter] = useState('');
   const tableInstanceRef = useRef(null);
   const [sorting, setSorting] = useState([]);
   const [showSuccessToast, setShowSuccessToast] = useState(false);
@@ -56,7 +56,7 @@ const User = () => {
 
   const { data, isError, isFetching, isLoading, refetch } = useQuery({
     queryKey: [
-      "users-data",
+      'users-data',
 
       columnFilters, //refetch when columnFilters changes
 
@@ -72,21 +72,17 @@ const User = () => {
     queryFn: async () => {
       const fetchURL = new URL(`${process.env.REACT_APP_BASE_URL}/users`);
 
-      fetchURL.searchParams.set(
-        "start",
+      fetchURL.searchParams.set('page', `${pagination.pageIndex + 1}`);
 
-        `${pagination.pageIndex * pagination.pageSize}`
-      );
+      fetchURL.searchParams.set('size', `${pagination.pageSize}`);
 
-      fetchURL.searchParams.set("size", `${pagination.pageSize}`);
-
-      fetchURL.searchParams.set("filters", JSON.stringify(columnFilters ?? []));
+      fetchURL.searchParams.set('filters', JSON.stringify(columnFilters ?? []));
 
       if (globalFilter) {
         fetchURL.pathname = `/api/users/search/${globalFilter}`;
       }
 
-      fetchURL.searchParams.set("sorting", JSON.stringify(sorting ?? []));
+      fetchURL.searchParams.set('sorting', JSON.stringify(sorting ?? []));
 
       const response = await fetch(fetchURL.href);
 
@@ -104,38 +100,38 @@ const User = () => {
   const columns = useMemo(
     () => [
       {
-        accessorKey: "id",
+        accessorKey: 'id',
 
-        header: "Id",
+        header: 'Id',
       },
       {
-        accessorKey: "name",
+        accessorKey: 'name',
 
-        header: "Name",
-      },
-
-      {
-        accessorKey: "email",
-
-        header: "Email",
+        header: 'Name',
       },
 
       {
-        accessorKey: "role",
+        accessorKey: 'email',
 
-        header: "Role",
+        header: 'Email',
+      },
+
+      {
+        accessorKey: 'role',
+
+        header: 'Role',
       },
       {
-        accessorKey: "activeStatus",
+        accessorKey: 'activeStatus',
 
-        header: "Status",
+        header: 'Status',
         Cell: ({ cell }) => {
           return cell.getValue() ? (
-            <span className="bg-green-100 tracking-wide px-3 py-2 rounded-full text-green-900 mx-auto">
+            <span className='bg-green-100 tracking-wide px-3 py-2 rounded-full text-green-900 mx-auto'>
               Active
             </span>
           ) : (
-            <span className="bg-red-100 tracking-wide px-3 py-2 rounded-full text-red-900 mx-auto">
+            <span className='bg-red-100 tracking-wide px-3 py-2 rounded-full text-red-900 mx-auto'>
               Out Of Office
             </span>
           );
@@ -150,7 +146,7 @@ const User = () => {
     return axios
       .delete(`${process.env.REACT_APP_BASE_URL}/user/${id}`)
       .then(() => {
-        queryClient.invalidateQueries(["user-data"]);
+        queryClient.invalidateQueries(['user-data']);
         setShowSuccessToast(true);
         refetch();
       })
@@ -170,7 +166,7 @@ const User = () => {
   };
   const handleConfirmDelete = () => {
     if (rowToDelete) {
-      deletePost.mutate(rowToDelete.getValue("id"));
+      deletePost.mutate(rowToDelete.getValue('id'));
       tableData.splice(rowToDelete.index, 1);
     }
     setOpenConfirmDialog(false);
@@ -203,36 +199,36 @@ const User = () => {
 
   //column definitions...
   return (
-    <section className="bg-white h-full w-full  p-4">
-      <h1 className="mb-4 font-semibold tracking-wide text-lg">Users</h1>
-      <Box className="border-slate-200 rounded border-[1px] p-4">
+    <section className='bg-white h-full w-full  p-4'>
+      <h1 className='mb-4 font-semibold tracking-wide text-lg'>Users</h1>
+      <Box className='border-slate-200 rounded border-[1px] p-4'>
         {tableInstanceRef.current && (
           <Toolbar
             sx={() => ({
-              backgroundColor: "#ede7f6",
+              backgroundColor: '#ede7f6',
 
-              borderRadius: "4px",
+              borderRadius: '4px',
 
-              display: "flex",
+              display: 'flex',
 
               flexDirection: {
-                xs: "column",
+                xs: 'column',
 
-                lg: "row",
+                lg: 'row',
               },
 
-              gap: "1rem",
+              gap: '1rem',
 
-              justifyContent: "space-between",
+              justifyContent: 'space-between',
 
-              p: "1.5rem 0",
+              p: '1.5rem 0',
             })}
           >
-            <Box className="gap-3 flex items-center">
+            <Box className='gap-3 flex items-center'>
               <Button
                 onClick={() => setCreateModalOpen(true)}
                 outline={true}
-                gradientDuoTone="purpleToBlue"
+                gradientDuoTone='purpleToBlue'
               >
                 Add User
               </Button>
@@ -267,9 +263,9 @@ const User = () => {
           muiToolbarAlertBannerProps={
             isError
               ? {
-                  color: "error",
+                  color: 'error',
 
-                  children: "Error loading data",
+                  children: 'Error loading data',
                 }
               : undefined
           }
@@ -279,7 +275,7 @@ const User = () => {
           onSortingChange={setSorting}
           renderBottomToolbarCustomActions={() => (
             <>
-              <Tooltip arrow title="Refresh Data">
+              <Tooltip arrow title='Refresh Data'>
                 <IconButton onClick={() => refetch()}>
                   <RefreshIcon />
                 </IconButton>
@@ -287,8 +283,8 @@ const User = () => {
             </>
           )}
           renderRowActions={({ row }) => (
-            <Box sx={{ display: "flex", gap: "1rem" }}>
-              <Tooltip arrow placement="left" title="Edit">
+            <Box sx={{ display: 'flex', gap: '1rem' }}>
+              <Tooltip arrow placement='left' title='Edit'>
                 <IconButton
                   onClick={() => {
                     setUpdateModalOpen(true);
@@ -299,8 +295,8 @@ const User = () => {
                 </IconButton>
               </Tooltip>
 
-              <Tooltip arrow placement="right" title="Delete">
-                <IconButton color="error" onClick={() => handleDeleteRow(row)}>
+              <Tooltip arrow placement='right' title='Delete'>
+                <IconButton color='error' onClick={() => handleDeleteRow(row)}>
                   <Delete />
                 </IconButton>
               </Tooltip>
@@ -326,20 +322,20 @@ const User = () => {
           {...(tableInstanceRef.current && (
             <Toolbar
               sx={{
-                display: "flex",
+                display: 'flex',
 
-                justifyContent: "center",
+                justifyContent: 'center',
 
-                flexDirection: "column",
+                flexDirection: 'column',
               }}
             >
               <Box
-                className="place-items-center"
-                sx={{ display: "grid", width: "100%" }}
+                className='place-items-center'
+                sx={{ display: 'grid', width: '100%' }}
               >
                 <Pagination
-                  variant="outlined"
-                  shape="rounded"
+                  variant='outlined'
+                  shape='rounded'
                   count={data?.totalPages ?? 0}
                   page={pagination.pageIndex + 1}
                   onChange={(event, value) =>
@@ -358,20 +354,20 @@ const User = () => {
         {tableInstanceRef.current && (
           <Toolbar
             sx={{
-              display: "flex",
+              display: 'flex',
 
-              justifyContent: "center",
+              justifyContent: 'center',
 
-              flexDirection: "column",
+              flexDirection: 'column',
             }}
           >
             <Box
-              className="place-items-center"
-              sx={{ display: "grid", width: "100%" }}
+              className='place-items-center'
+              sx={{ display: 'grid', width: '100%' }}
             >
               <Pagination
-                variant="outlined"
-                shape="rounded"
+                variant='outlined'
+                shape='rounded'
                 count={data?.totalPages ?? 0}
                 page={pagination.pageIndex + 1}
                 onChange={(event, value) =>
@@ -401,40 +397,40 @@ const User = () => {
       <Dialog
         open={openConfirmDialog}
         onClose={handleCloseConfirmDialog}
-        aria-labelledby="alert-dialog-title"
-        aria-describedby="alert-dialog-description"
+        aria-labelledby='alert-dialog-title'
+        aria-describedby='alert-dialog-description'
       >
-        <DialogTitle id="alert-dialog-title">{"Confirm Deletion"}</DialogTitle>
+        <DialogTitle id='alert-dialog-title'>{'Confirm Deletion'}</DialogTitle>
         <DialogContent>
-          <DialogContentText id="alert-dialog-description">
+          <DialogContentText id='alert-dialog-description'>
             Are you sure you want to delete this guest?
           </DialogContentText>
         </DialogContent>
         <DialogActions>
-          <Button onClick={handleCloseConfirmDialog} color="primary">
+          <Button onClick={handleCloseConfirmDialog} color='primary'>
             Cancel
           </Button>
-          <Button onClick={handleConfirmDelete} color="primary" autoFocus>
+          <Button onClick={handleConfirmDelete} color='primary' autoFocus>
             Delete
           </Button>
         </DialogActions>
       </Dialog>
       {/* toast */}
       {showSuccessToast && (
-        <Toast className="absolute bottom-4 left-4">
-          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200">
-            <HiCheck className="h-5 w-5" />
+        <Toast className='absolute bottom-4 left-4'>
+          <div className='inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-green-100 text-green-500 dark:bg-green-800 dark:text-green-200'>
+            <HiCheck className='h-5 w-5' />
           </div>
-          <div className="ml-3 text-sm font-normal">Data Updated Success.</div>
+          <div className='ml-3 text-sm font-normal'>Data Updated Success.</div>
           <Toast.Toggle onClick={() => setShowSuccessToast(false)} />
         </Toast>
       )}
       {showErrorToast && (
-        <Toast className="absolute bottom-4 left-4">
-          <div className="inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200">
-            <IoMdClose className="h-5 w-5" />
+        <Toast className='absolute bottom-4 left-4'>
+          <div className='inline-flex h-8 w-8 shrink-0 items-center justify-center rounded-lg bg-red-100 text-red-500 dark:bg-red-800 dark:text-red-200'>
+            <IoMdClose className='h-5 w-5' />
           </div>
-          <div className="ml-3 text-sm font-normal">Data update failed.</div>
+          <div className='ml-3 text-sm font-normal'>Data update failed.</div>
           <Toast.Toggle onClick={() => setShowErrorToast(false)} />
         </Toast>
       )}

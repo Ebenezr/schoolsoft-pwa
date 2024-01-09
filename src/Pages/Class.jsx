@@ -75,11 +75,7 @@ const Class = () => {
     queryFn: async () => {
       const fetchURL = new URL(`${process.env.REACT_APP_BASE_URL}/classes`);
 
-      fetchURL.searchParams.set(
-        'start',
-
-        `${pagination.pageIndex * pagination.pageSize}`
-      );
+    fetchURL.searchParams.set('page', `${pagination.pageIndex + 1}`);
 
       fetchURL.searchParams.set('size', `${pagination.pageSize}`);
 

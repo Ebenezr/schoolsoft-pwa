@@ -77,11 +77,7 @@ const Student = () => {
     queryFn: async () => {
       const fetchURL = new URL(`${process.env.REACT_APP_BASE_URL}/students`);
 
-      fetchURL.searchParams.set(
-        'start',
-
-        `${pagination.pageIndex * pagination.pageSize}`
-      );
+      fetchURL.searchParams.set('page', `${pagination.pageIndex + 1}`);
 
       fetchURL.searchParams.set('size', `${pagination.pageSize}`);
 

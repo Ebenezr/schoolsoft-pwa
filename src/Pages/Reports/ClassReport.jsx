@@ -71,11 +71,7 @@ const StudentClassReport = () => {
         `${process.env.REACT_APP_BASE_URL}/class/${selectedGrade}/students`
       );
 
-      fetchURL.searchParams.set(
-        'start',
-
-        `${pagination.pageIndex * pagination.pageSize}`
-      );
+      fetchURL.searchParams.set('page', `${pagination.pageIndex + 1}`);
 
       fetchURL.searchParams.set('size', `${pagination.pageSize}`);
 
@@ -189,11 +185,11 @@ const StudentClassReport = () => {
     return items?.map((item) => {
       // Modify this object based on the structure of your `item`
       return {
-        Id: item.id,
+        'Id': item.id,
         'Student Name': `${item.first_name} ${item.last_name}`,
         'Guardian Name': item.guardianName,
         'Guardian Phone': item.guardianPhone,
-        Grade: item.Class.name,
+        'Grade': item.Class.name,
         'Fee Total': item.feeAmount,
         'Fee Balance': item.feeBalance,
       };
@@ -211,11 +207,11 @@ const StudentClassReport = () => {
 
   //column definitions...
   return (
-    <section className=" h-full w-full  p-4">
-      <h1 className="mb-4 font-semibold tracking-wide text-lg">
+    <section className=' h-full w-full  p-4'>
+      <h1 className='mb-4 font-semibold tracking-wide text-lg'>
         Students Class Report
       </h1>
-      <Box className="border-slate-200 rounded border-[1px] p-4">
+      <Box className='border-slate-200 rounded border-[1px] p-4'>
         {tableInstanceRef.current && (
           <Toolbar
             sx={() => ({
@@ -239,29 +235,29 @@ const StudentClassReport = () => {
             })}
           >
             <Box>
-              <div className="">
+              <div className=''>
                 <select
-                  title="Select a Class"
-                  name="grade"
-                  id="grade-select"
+                  title='Select a Class'
+                  name='grade'
+                  id='grade-select'
                   value={selectedGrade ?? ''}
                   onChange={handleChange}
-                  className="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-3 pr-10 py-2 appearance-none dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500"
+                  className='bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-blue-500 focus:border-blue-500 block w-full pl-3 pr-10 py-2 appearance-none dark:placeholder-gray-400 dark:focus:ring-blue-500 dark:focus:border-blue-500'
                 >
-                  <option value="">Select Class</option>
+                  <option value=''>Select Class</option>
                   {classList?.map((grade) => (
                     <option key={grade?.id} value={grade?.id}>
                       {grade?.name}
                     </option>
                   ))}
                 </select>
-                <div className="pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700">
+                <div className='pointer-events-none absolute inset-y-0 right-0 flex items-center px-2 text-gray-700'>
                   <svg
-                    className="fill-current h-4 w-4"
-                    xmlns="http://www.w3.org/2000/svg"
-                    viewBox="0 0 20 20"
+                    className='fill-current h-4 w-4'
+                    xmlns='http://www.w3.org/2000/svg'
+                    viewBox='0 0 20 20'
                   >
-                    <path d="M7 7l3-3 3 3m0 6l-3 3-3-3" />
+                    <path d='M7 7l3-3 3 3m0 6l-3 3-3-3' />
                   </svg>
                 </div>
               </div>
@@ -276,7 +272,7 @@ const StudentClassReport = () => {
               <MRT_ToggleDensePaddingButton table={tableInstanceRef.current} />
 
               <MRT_FullScreenToggleButton table={tableInstanceRef.current} />
-              <Tooltip arrow title="Export to SVG">
+              <Tooltip arrow title='Export to SVG'>
                 <IconButton onClick={handleExportData}>
                   <FileDownloadIcon />
                 </IconButton>
@@ -311,7 +307,7 @@ const StudentClassReport = () => {
           onSortingChange={setSorting}
           renderBottomToolbarCustomActions={() => (
             <>
-              <Tooltip arrow title="Refresh Data">
+              <Tooltip arrow title='Refresh Data'>
                 <IconButton onClick={() => refetch()}>
                   <RefreshIcon />
                 </IconButton>
@@ -346,12 +342,12 @@ const StudentClassReport = () => {
               }}
             >
               <Box
-                className="place-items-center"
+                className='place-items-center'
                 sx={{ display: 'grid', width: '100%' }}
               >
                 <Pagination
-                  variant="outlined"
-                  shape="rounded"
+                  variant='outlined'
+                  shape='rounded'
                   count={data?.totalPages ?? 0}
                   page={pagination.pageIndex + 1}
                   onChange={(event, value) =>
@@ -378,12 +374,12 @@ const StudentClassReport = () => {
             }}
           >
             <Box
-              className="place-items-center"
+              className='place-items-center'
               sx={{ display: 'grid', width: '100%' }}
             >
               <Pagination
-                variant="outlined"
-                shape="rounded"
+                variant='outlined'
+                shape='rounded'
                 count={data?.totalPages ?? 0}
                 page={pagination.pageIndex + 1}
                 onChange={(event, value) =>
